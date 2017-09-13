@@ -9,7 +9,9 @@
 
                     <div class="panel-body">
                         <article>
-                            <h4>{{$thread->title}}</h4>
+                            <h4>
+                                <a href="#">{{$thread->creator->name}} </a>
+                                posted : {{$thread->title}}</h4>
                             <div class="body">
                                 {{$thread->body }}
                             </div>
@@ -25,16 +27,7 @@
                     <div class="panel-heading">Replies</div>
 
                     @foreach($thread->replies as $reply)
-                        <div class="panel-body">
-                            <article>
-                                <h6 class="badge">{{$reply->owner->name}} said :</h6>
-                                <div class="body">
-                                    {{$reply->body }}
-                                </div>
-                                <span class=""> {{$reply->created_at->diffForHumans()}}</span>
-                            </article>
-                            <hr>
-                        </div>
+                        @include('threads.reply')
                     @endforeach
                 </div>
             </div>
