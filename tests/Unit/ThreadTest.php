@@ -34,6 +34,16 @@ class ThreadTest extends TestCase
         $this->assertInstanceOf(Collection::class, $this->thread->replies);
     }
 
+
+    /** @test */
+    function aThreadCanMakeAStringPath()
+    {
+        $thread = create(Thread::class);
+
+        $this->assertEquals('/threads/' . $thread->channel->slug . '/' . $thread->id, $thread->path());
+
+    }
+
     /** @test */
     public function aThreadHasACreator()
     {
@@ -49,7 +59,15 @@ class ThreadTest extends TestCase
             'user_id' => 1
         ]);
 
-        $this->assertCount(1,$this->thread->replies);
+        $this->assertCount(1, $this->thread->replies);
     }
 
+    /** @test */
+    function aThreadBelongsToAChannel()
+    {
+
+        $thread = create(Thread::class);
+
+        $this->assertInstanceOf('App\Channel', $thread->channel);
+    }
 }

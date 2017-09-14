@@ -15,11 +15,15 @@ class ParticipateInForumTest extends TestCase
 
     use DatabaseMigrations;
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+
+    /** @test */
+    function UnauthenticatedUsersMayNotAddReplies()
+    {
+
+        $this->post('/threads/channel/1/replies', [])
+            ->assertRedirect('/login');
+
+    }
 
     /** @test */
     public function AnAuthenticatedUserMayParticipateInForumThreads()

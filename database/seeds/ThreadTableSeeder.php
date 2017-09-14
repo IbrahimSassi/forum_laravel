@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class ThreadTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(ThreadTableSeeder::class);
+        for ($i = 0; $i < 50; $i++) {
+            factory(\App\Thread::class)->create();
+        }
+
     }
 }
