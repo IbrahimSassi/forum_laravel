@@ -19,21 +19,24 @@ class CreateThreadTest extends TestCase
     public function guestsMayNotCreateAThread()
     {
 
-        $this->expectException('Illuminate\Auth\AuthenticationException');
-        $thread = factory(Thread::class)->make();
+        $this->withExceptionHandling();
 
-        $this->post('/threads', $thread->toArray());
+        $this->get('/threads/create')->assertRedirect('/login');
+
+        $this->post('/threads')
+            ->assertRedirect('/login');
     }
 
     /** @test */
     public function anAuthenticatedUserCanCreateNewForumThread()
     {
 //        given , we have signed in user
-        $this->actingAs(factory(User::class)->create());
+//        $this->actingAs(create(User::class));
+        $this->signIn();
 
 //        when we hit  the endpoint to create a new thread
 
-        $thread = factory(Thread::class)->make();
+        $thread = make(Thread::class);
         $this->post('/threads', $thread->toArray());
 
 //        Then , when we visit the thread page
@@ -42,4 +45,6 @@ class CreateThreadTest extends TestCase
             ->assertSee($thread->title)
             ->assertSee($thread->body);
     }
+
+
 }
