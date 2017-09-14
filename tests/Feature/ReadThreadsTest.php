@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Channel;
 use App\Reply;
 use App\Thread;
+use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -70,5 +71,19 @@ class ReadThreadsTest extends TestCase
         $this->get('/threads/' . $channel->slug)
             ->assertSee($threadInChannel->title)
             ->assertDontSee($threadNotInChannel->title);
+    }
+
+
+    /** @test */
+    function aUserCanFilterThreadsByUsername()
+    {
+        $this->signIn(create(User::class, ['name' => 'JohnDoe']));
+
+        $threadByJohn = create(Thread::class, ['user_id' => auth()->id()]);
+        $otherThread = create(Thread::class);
+
+        $this->get('threads?by=JohnDoe')
+            ->assertSee($threadByJohn->title)
+            ->assertDontSee($otherThread->title);
     }
 }
