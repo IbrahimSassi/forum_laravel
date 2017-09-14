@@ -26,17 +26,11 @@ class ThreadController extends Controller
      */
     public function index(Channel $channel, ThreadFilters $filters)
     {
-        if ($channel->exists) {
-//            $channelId = Channel::whereSlug($channelSlug)->first()->id;
-//            $threads = Thread::where('channel_id', $channel->id)->latest();
-            //OR
-            $threads = $channel->threads()->latest();
-        } else
-            $threads = Thread::latest();
+
+        $threads = $this->getThreads($channel, $filters);
 
 
-
-        $threads = $threads->filter($filters)->get();
+        $threads = $threads->get();
 
         return view('threads.index', compact('threads'));
     }
@@ -120,5 +114,23 @@ class ThreadController extends Controller
     public function destroy(Thread $thread)
     {
         //
+    }
+
+    /**
+     * @param Channel $channel
+     * @param ThreadFilters $filters
+     * @return \Illuminate\Database\Query\Builder|static
+     */
+    public function getThreads(Channel $channel, ThreadFilters $filters)
+    {
+        $threads = Thread::latest()->filter($filters);
+
+        if ($channel->exists) {
+//            $channelId = Channel::whereSlug($channelSlug)->first()->id;
+//            $threads = Thread::where('channel_id', $channel->id)->latest();
+//            OR
+            $threads = $channel->threads()->latest();
+        }
+        return $threads;
     }
 }
