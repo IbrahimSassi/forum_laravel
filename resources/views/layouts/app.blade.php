@@ -53,6 +53,7 @@
                 <ul class="nav navbar-nav">
                     &nbsp;
                     <li><a href="/threads">All Threads</a></li>
+                    <li><a href="/threads/create">New Thread</a></li>
 
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -63,6 +64,8 @@
                             @endforeach
                         </ul>
                     </li>
+
+
 
                 </ul>
 
