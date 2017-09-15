@@ -13,7 +13,7 @@ class Thread extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope('replyCount',function ($builder){
+        static::addGlobalScope('replyCount', function ($builder) {
             $builder->withCount('replies');
         });
     }
@@ -26,7 +26,7 @@ class Thread extends Model
 
     public function replies()
     {
-        return $this->hasMany(Reply::class);
+        return $this->hasMany(Reply::class)->withCount('favorites');
     }
 
     public function getReplyCountAttribute()
@@ -51,7 +51,7 @@ class Thread extends Model
     }
 
 
-    public function scopeFilter($query,$filters)
+    public function scopeFilter($query, $filters)
     {
         return $filters->apply($query);
 
