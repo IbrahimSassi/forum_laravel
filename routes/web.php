@@ -31,3 +31,6 @@ Route::get('/threads/{channel}', 'ThreadController@index');
 
 Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
+
+
+Route::post('/replies/{reply}/favorites', 'FavoriteController@store');
