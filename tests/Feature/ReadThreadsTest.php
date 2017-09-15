@@ -86,4 +86,25 @@ class ReadThreadsTest extends TestCase
             ->assertSee($threadByJohn->title)
             ->assertDontSee($otherThread->title);
     }
+
+
+    /** @test */
+    function aUserFilterThreadByPopularity()
+    {
+
+        //Given , 3 threads
+        //With 2 rep,3rep and 0 rep respec
+
+        $threadWith3Replies = create(Thread::class);
+        create(Reply::class, ['thread_id' => $threadWith3Replies->id], 3);
+
+        $threadWith2Replies = create(Thread::class);
+        create(Reply::class, ['thread_id' => $threadWith2Replies->id], 2);
+
+        $threadWith0Replies = $this->thread;
+
+        $response = $this->getJson('threads?popular=1')->json();
+
+        $this->assertEquals([3, 2, 0], array_column($response, 'replies_count'));
+    }
 }

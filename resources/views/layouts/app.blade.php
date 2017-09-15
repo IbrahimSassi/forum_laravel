@@ -22,6 +22,15 @@
 
         .blog-footer p:last-child {
             margin-bottom: 0;
+            align-items: center;
+        }
+
+        .level {
+            display: flex;
+        }
+
+        .flex {
+            flex: 1;
         }
 
     </style>
@@ -61,6 +70,7 @@
                             @if(auth()->check())
                                 <li><a href="/threads?by={{auth()->user()->name}}">My Threads</a></li>
                             @endif
+                            <li><a href="/threads?popular=1">Popular Threads</a></li>
                         </ul>
                     </li>
                     <li><a href="/threads/create">New Thread</a></li>
