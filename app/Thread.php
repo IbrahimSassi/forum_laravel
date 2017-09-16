@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Thread extends Model
 {
 
+    use RecordsActivity;
     protected $guarded = [];
 
     protected $with = ['creator', 'channel'];
@@ -23,7 +24,10 @@ class Thread extends Model
 //           $thread->replies()->delete();
 //        });
 
+
+
     }
+
 
     public function path()
     {
@@ -47,6 +51,7 @@ class Thread extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+
     public function channel()
     {
         return $this->belongsTo(Channel::class);
@@ -57,7 +62,6 @@ class Thread extends Model
     {
         $this->replies()->create($reply);
     }
-
 
     public function scopeFilter($query, $filters)
     {
