@@ -3,7 +3,7 @@
     <div class="panel-heading">
         <div class="level">
             <h5 class="flex">
-                <a href="/user/{{$reply->owner->id}}">{{$reply->owner->name}}</a> said :
+                <a href="/profiles/{{$reply->owner->name}}">{{$reply->owner->name}}</a> said :
             </h5>
             <div>
 

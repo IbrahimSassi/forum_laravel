@@ -9,7 +9,7 @@
 
                     <div class="panel-body">
                         <h4>
-                            <a href="#">{{$thread->creator->name}} </a>
+                            <a href="{{route('profile',$thread->creator)}}">{{$thread->creator->name}} </a>
                             posted : {{$thread->title}}</h4>
                         <div class="panel-body">
                             {{$thread->body }}

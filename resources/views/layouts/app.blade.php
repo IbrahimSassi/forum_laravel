@@ -27,6 +27,8 @@
 
         .level {
             display: flex;
+            place-items: center;
+
         }
 
         .flex {
