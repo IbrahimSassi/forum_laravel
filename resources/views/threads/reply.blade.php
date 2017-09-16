@@ -18,7 +18,7 @@
     </div>
     <div class="panel-body">
         {{$reply->body }}
-        <span class=""> {{$reply->created_at->diffForHumans()}}</span>
+        <span class="badge pull-right"> {{$reply->created_at->diffForHumans()}}</span>
         <hr>
     </div>
 </div>
