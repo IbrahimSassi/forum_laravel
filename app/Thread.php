@@ -9,7 +9,7 @@ class Thread extends Model
 
     protected $guarded = [];
 
-    protected $with = ['creator','channel'];
+    protected $with = ['creator', 'channel'];
 
     protected static function boot()
     {
@@ -18,6 +18,10 @@ class Thread extends Model
             $builder->withCount('replies');
         });
 
+//        Another option to delete replies related to a thread
+//        static::deleting(function ($thread){
+//           $thread->replies()->delete();
+//        });
 
     }
 

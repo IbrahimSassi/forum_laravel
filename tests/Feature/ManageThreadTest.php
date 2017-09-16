@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Channel;
+use App\Reply;
 use App\Thread;
 use App\User;
 use Tests\TestCase;
@@ -10,7 +11,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class CreateThreadTest extends TestCase
+class ManageThreadTest extends TestCase
 {
 
     use DatabaseMigrations;
@@ -53,14 +54,14 @@ class CreateThreadTest extends TestCase
     /** @test */
     function aThreadRequiresATitle()
     {
-        $this->publish(['title' => null])
+        $this->publishAThread(['title' => null])
             ->assertSessionHasErrors('title');
     }
 
     /** @test */
     function aThreadRequiresABody()
     {
-        $this->publish(['body' => null])
+        $this->publishAThread(['body' => null])
             ->assertSessionHasErrors('body');
     }
 
@@ -69,15 +70,48 @@ class CreateThreadTest extends TestCase
     {
         factory(Channel::class, 2)->create();
 
-        $this->publish(['channel_id' => null])
+        $this->publishAThread(['channel_id' => null])
             ->assertSessionHasErrors('channel_id');
 
-        $this->publish(['channel_id' => 999])
+        $this->publishAThread(['channel_id' => 999])
             ->assertSessionHasErrors('channel_id');
     }
 
 
-    public function publish($overrides)
+    /** @test */
+    function GuestCannotDeleteThreads()
+    {
+//        $this->withExceptionHandling();
+        $thread = create(Thread::class);
+        $response = $this->delete($thread->path());
+        $response->assertRedirect('/login');
+
+    }
+
+
+    /** @test */
+    function ThreadsMayOnlyBeDeletedByThoseWhoHavePermission(){
+        //TODO
+    }
+
+
+    /** @test */
+    function deleteAThread()
+    {
+        $this->signIn();
+        $thread = create(Thread::class);
+
+        $reply = create(Reply::class, ['thread_id' => $thread->id]);
+
+        $response = $this->json('DELETE', $thread->path());
+
+        $response->assertStatus(204);
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+    }
+
+
+    public function publishAThread($overrides)
     {
         $this->withExceptionHandling()->signIn();
         $thread = make(Thread::class, $overrides);
