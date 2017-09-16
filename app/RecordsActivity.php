@@ -15,6 +15,7 @@ trait RecordsActivity
     protected static function bootRecordsActivity()
     {
 
+        if (auth()->guest()) return;
         foreach (static::getActivitiesToRecord() as $event) {
             static::created(function ($newActivity) use ($event) {
                 $newActivity->recordActivity($event);
