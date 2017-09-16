@@ -18,8 +18,9 @@
                         <div class="panel-heading">
                             <div class="level">
                                 <h4 class="flex">
-                                    <a href="#">{{$thread->creator->name}} </a>
-                                    posted : {{$thread->title}}
+                                    {{$thread->creator->name}} posted :
+                                    <a href="/thread/{{$thread->path()}}"> {{$thread->title}} </a>
+
                                 </h4>
                                 <span class="badge">
                             {{$thread->created_at->diffForHumans()}}

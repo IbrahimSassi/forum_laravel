@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="page-header"><h3>Forum Threads</h3></div>
-                @foreach($threads as $thread)
+                @forelse($threads as $thread)
                     <div class="panel panel-default">
                         <div class="panel-heading">
 
@@ -27,7 +27,14 @@
                             <hr>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+
+                            <h4 class="text-center">There no relevant results at this time</h4>
+                        </div>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>

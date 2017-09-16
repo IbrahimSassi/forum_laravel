@@ -11,15 +11,14 @@
                             <h4 class="flex">
                                 <a href="{{route('profile',$thread->creator)}}">{{$thread->creator->name}} </a>
                                 posted : {{$thread->title}}</h4>
-                            @if(Auth::check())
+                            @can('update',$thread)
                                 <form action="{{$thread->path()}}" method="post">
                                     {{csrf_field()}}
                                     {{method_field('DELETE')}}
 
                                     <button type="submit" class="btn btn-link">Delete</button>
                                 </form>
-                            @endif
-
+                            @endcan
 
                         </div>
                     </div>

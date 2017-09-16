@@ -6,6 +6,7 @@ use App\Channel;
 use App\Reply;
 use App\Thread;
 use App\User;
+use phpDocumentor\Reflection\Types\Integer;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -79,30 +80,36 @@ class ManageThreadTest extends TestCase
 
 
     /** @test */
-    function GuestCannotDeleteThreads()
+    function unauthorisedUsersMayNotDeleteThreads()
     {
-//        $this->withExceptionHandling();
         $thread = create(Thread::class);
-        $response = $this->delete($thread->path());
-        $response->assertRedirect('/login');
+        $this->delete($thread->path())
+            ->assertRedirect('/login');
+
+        $this->signIn();
+
+        $this->delete($thread->path())
+            ->assertStatus(403);
 
     }
 
 
     /** @test */
-    function ThreadsMayOnlyBeDeletedByThoseWhoHavePermission(){
+    function ThreadsMayOnlyBeDeletedByThoseWhoHavePermission()
+    {
         //TODO
     }
 
 
     /** @test */
-    function deleteAThread()
+    function authorisedUsersCanDeleteThreads()
     {
         $this->signIn();
-        $thread = create(Thread::class);
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
 
         $reply = create(Reply::class, ['thread_id' => $thread->id]);
 
+//        dd(['user_id' => auth()->id() , 'threadUserId' => $thread->user_id]);
         $response = $this->json('DELETE', $thread->path());
 
         $response->assertStatus(204);
