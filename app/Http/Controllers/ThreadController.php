@@ -68,7 +68,8 @@ class ThreadController extends Controller
             'body' => request('body')
         ]);
 
-        return redirect($thread->path());
+        return redirect($thread->path())
+            ->with('flash_message', 'Your Thread has been published');
     }
 
     /**
@@ -130,7 +131,8 @@ class ThreadController extends Controller
         if (\request()->wantsJson())
             return response([], 204);
 
-        return redirect('/threads');
+        return redirect('/threads')
+            ->with('flash_message', 'Your Thread has been deleted');
     }
 
     /**

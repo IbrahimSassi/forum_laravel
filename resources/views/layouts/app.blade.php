@@ -45,6 +45,9 @@
 
     @yield('content')
 
+
+    <flash message="{{session('flash_message')}}"></flash>
+    {{--<example></example>--}}
     @include('layouts.footer')
 </div>
 
