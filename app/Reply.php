@@ -11,8 +11,9 @@ class Reply extends Model
 
     protected $guarded = [];
 
+
 //    protected $withCount = ['favorites'];
-    protected $with = ['owner', 'favorites'];
+    protected $with = ['owner', 'favorites','thread'];
 
 
     public function owner()
@@ -20,5 +21,10 @@ class Reply extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+
+    public function thread()
+    {
+        return $this->belongsTo(Thread::class);
+    }
 
 }
