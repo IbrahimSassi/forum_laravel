@@ -16,18 +16,19 @@ class ProfilesTest extends TestCase
     /** @test */
     public function aUserHasAProfil()
     {
-        $user = create(User::class);
-        $this->get("/profiles/{$user->name}")
-            ->assertSee($user->name);
+        $this->signIn();
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
+        $this->get("/profiles/" . auth()->user()->name)
+            ->assertSee(auth()->user()->name);
     }
 
 
     /** @test */
     function profilesDisplayAllThreadsCreatedByTheAssociatedUser()
     {
-        $user = create(User::class);
-        $thread = create(Thread::class, ['user_id' => $user->id]);
-        $this->get("/profiles/{$user->name}")
+        $this->signIn();
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
+        $this->get("/profiles/" . auth()->user()->name)
             ->assertSee($thread->title)
             ->assertSee($thread->body);
 
