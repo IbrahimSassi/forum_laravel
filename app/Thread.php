@@ -20,10 +20,19 @@ class Thread extends Model
         });
 
 //        Another option to delete replies related to a thread
-//        static::deleting(function ($thread){
+        static::deleting(function ($thread) {
 //           $thread->replies()->delete();
-//        });
 
+            //This
+            /*
+            $thread->replies->each(function ($reply) {
+                $reply->delete();
+            });
+            */
+
+            //Can be Replaced By This
+            $thread->replies->each->delete();
+        });
 
 
     }
@@ -66,6 +75,7 @@ class Thread extends Model
     public function scopeFilter($query, $filters)
     {
         return $filters->apply($query);
-
     }
+
+
 }
