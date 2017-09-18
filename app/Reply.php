@@ -13,7 +13,7 @@ class Reply extends Model
 
 
 //    protected $withCount = ['favorites'];
-    protected $with = ['owner', 'favorites','thread'];
+    protected $with = ['owner','thread'];
 
 
     public function owner()

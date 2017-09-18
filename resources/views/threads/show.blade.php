@@ -16,7 +16,7 @@
                                     {{csrf_field()}}
                                     {{method_field('DELETE')}}
 
-                                    <button type="submit" class="btn btn-link">Delete</button>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             @endcan
 
@@ -26,6 +26,11 @@
                     <div class="panel-body">
                         {{$thread->body }}
                         <hr>
+                        <form method="post" action="/">
+                            {{csrf_field()}}
+                            <button class="btn btn-success pull-right">Like <i
+                                        class="glyphicon glyphicon-thumbs-up"></i></button>
+                        </form>
                     </div>
                 </div>
 
