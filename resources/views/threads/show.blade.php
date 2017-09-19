@@ -26,9 +26,9 @@
                     <div class="panel-body">
                         {{$thread->body }}
                         <hr>
-                        <form method="post" action="/">
+                        <form method="post" action="/threads/{{$thread->id}}/favorites">
                             {{csrf_field()}}
-                            <button class="btn btn-success pull-right">Like <i
+                            <button {{$thread->isFavorited() ? 'disabled' : ''}} class="btn btn-success pull-right">Like <i
                                         class="glyphicon glyphicon-thumbs-up"></i></button>
                         </form>
                     </div>

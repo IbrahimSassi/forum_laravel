@@ -34,6 +34,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
 
-Route::post('/replies/{reply}/favorites', 'FavoriteController@store');
+Route::post('/replies/{reply}/favorites', 'FavoriteController@storeReply');
+Route::post('/threads/{thread}/favorites', 'FavoriteController@storeThread');
 
 Route::get('/profiles/{user}', 'ProfileController@show')->name('profile');

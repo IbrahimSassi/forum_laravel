@@ -13,7 +13,7 @@ class Reply extends Model
 
 
 //    protected $withCount = ['favorites'];
-    protected $with = ['owner','thread'];
+    protected $with = ['owner', 'thread'];
 
 
     public function owner()
@@ -25,6 +25,12 @@ class Reply extends Model
     public function thread()
     {
         return $this->belongsTo(Thread::class);
+    }
+
+
+    public function path()
+    {
+        return $this->thread->path() . "#reply-" . $this->id;
     }
 
 }

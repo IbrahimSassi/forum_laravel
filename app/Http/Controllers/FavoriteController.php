@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Favorite;
 use App\Reply;
+use App\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,9 +16,15 @@ class FavoriteController extends Controller
         $this->middleware('auth');
     }
 
-    public function store(Reply $reply)
+    public function storeReply(Reply $reply)
     {
         $reply->favorite(auth()->id());
+        return back();
+    }
+
+    public function storeThread(Thread $thread)
+    {
+        $thread->favorite(auth()->id());
         return back();
     }
 }
