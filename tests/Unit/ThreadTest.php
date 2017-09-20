@@ -48,7 +48,7 @@ class ThreadTest extends TestCase
     public function aThreadHasACreator()
     {
 
-        $this->assertInstanceOf(User::class, $this->thread->creator);
+        $this->assertInstanceOf(User::class, $this->thread->owner);
     }
 
     /** @test */

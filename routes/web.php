@@ -23,6 +23,7 @@ Route::get('/threads/{channel}/{thread}', 'ThreadController@show');
 Route::delete('/threads/{channel}/{thread}', 'ThreadController@destroy');
 
 Route::post('/threads/{channel}/{thread}/replies', 'ReplyController@store');
+Route::delete('/replies/{reply}', 'ReplyController@destroy');
 // By This Line
 
 //Route::resource('threads', 'ThreadController');

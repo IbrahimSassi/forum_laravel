@@ -9,7 +9,7 @@
                         <div class="level">
 
                             <h4 class="flex">
-                                <a href="{{route('profile',$thread->creator)}}">{{$thread->creator->name}} </a>
+                                <a href="{{route('profile',$thread->owner)}}">{{$thread->owner->name}} </a>
                                 posted : {{$thread->title}}</h4>
                             @can('update',$thread)
                                 <form action="{{$thread->path()}}" method="post">
@@ -63,7 +63,7 @@
                     <div class="panel-body">
                         <p>
                             This thread was published {{$thread->created_at->diffForHumans()}} by
-                            <a href="{{$thread->creator->id}}">{{$thread->creator->name}}</a> , and currently
+                            <a href="{{$thread->owner->id}}">{{$thread->owner->name}}</a> , and currently
                             has {{$thread->replies_count}} {{str_plural('comment',$thread->replies_count)}}
                         </p>
                     </div>

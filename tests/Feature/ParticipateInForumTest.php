@@ -51,6 +51,37 @@ class ParticipateInForumTest extends TestCase
         $this->post($thread->path() . '/replies', $reply->toArray())
             ->assertSessionHasErrors('body');
 
+    }
+
+    /** @test */
+    function unauthorisedUserCannotDeleteReply()
+    {
+
+//        $this->withExceptionHandling();
+
+
+        $reply = create(Reply::class);
+        $this->delete("/replies/{$reply->id}")
+            ->assertRedirect('/login');
+
+
+        //we create a reply and then you want to delete a reply that u didnt create
+        $reply2 = create(Reply::class);
+        $this->signIn()
+            ->delete("/replies/{$reply2->id}")
+            ->assertStatus(403);
+    }
+
+
+    /** @test */
+    function AuthorisedUserCanDeleteAReply()
+    {
+        $this->signIn();
+        $reply = create(Reply::class, ['user_id' => auth()->id()]);
+
+        $this
+            ->delete("/replies/{$reply->id}");
+        $this->assertDatabaseMissing('replies', ["id" => $reply->id]);
 
     }
 }

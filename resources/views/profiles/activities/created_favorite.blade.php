@@ -1,8 +1,9 @@
 @component('profiles.activities.activity')
 
     @slot('heading')
-        <i class="glyphicon glyphicon-thumbs-up"></i> {{$profileUser->name}} liked a {{$activity->subject->favorited->owner->name}}'s comment on
-        <a href="{{$activity->subject->favorited->path()}}">"{{$activity->subject->favorited->thread->title}}"</a>
+        <i class="glyphicon glyphicon-thumbs-up"></i> {{$profileUser->name}} liked {{$activity->subject->favorited->owner->name}}'s {{$activity->subject->favorited->thread ? 'comment' :'thread'}} on
+        <a href="{{$activity->subject->favorited->path()}}">"{{$activity->subject->favorited->thread ? $activity->subject->favorited->thread->title : $activity->subject->favorited->title}}
+            "</a>
 
     @endslot
 

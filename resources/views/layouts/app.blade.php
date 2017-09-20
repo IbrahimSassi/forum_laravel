@@ -35,6 +35,10 @@
             flex: 1;
         }
 
+        .mr-1 {
+            margin-right: 1em;
+        }
+
     </style>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>

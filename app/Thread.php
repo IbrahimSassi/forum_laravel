@@ -10,7 +10,7 @@ class Thread extends Model
     use RecordsActivity, Favoritable;
     protected $guarded = [];
 
-    protected $with = ['creator', 'channel'];
+    protected $with = ['owner', 'channel'];
 
     protected static function boot()
     {
@@ -55,7 +55,7 @@ class Thread extends Model
         return $this->replies()->count();
     }
 
-    public function creator()
+    public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
