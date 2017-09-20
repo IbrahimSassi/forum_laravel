@@ -37,8 +37,22 @@ class ReplyController extends Controller
 //        if ($reply->user_id != auth()->id()) {
 //            return response([], 403);
 //        }
-
         $reply->delete();
+
+        if (request()->expectsJson())
+            return response([], 200);
+
         return back();
+    }
+
+    public function update(Reply $reply)
+    {
+        $this->authorize('update', $reply);
+
+        $reply->update(['body' => request('body')]);
+
+
+        return $reply;
+//        return back();
     }
 }
