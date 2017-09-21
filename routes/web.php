@@ -37,6 +37,9 @@ Auth::routes();
 
 
 Route::post('/replies/{reply}/favorites', 'FavoriteController@storeReply');
+Route::delete('/replies/{reply}/favorites', 'FavoriteController@destroyReply');
+
+
 Route::post('/threads/{thread}/favorites', 'FavoriteController@storeThread');
 
 Route::get('/profiles/{user}', 'ProfileController@show')->name('profile');

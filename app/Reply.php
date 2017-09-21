@@ -14,7 +14,7 @@ class Reply extends Model
 
 //    protected $withCount = ['favorites'];
     protected $with = ['owner', 'thread'];
-
+    protected $appends = ['favoritesCount', 'isFavorited'];
 
     public function owner()
     {

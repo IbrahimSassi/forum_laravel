@@ -8,12 +8,8 @@
                 </h5>
                 <div>
 
-                    <form action="/replies/{{$reply->id}}/favorites" method="post">
-                        {{csrf_field()}}
-                        <button type="submit" class="btn btn-default" {{$reply->isFavorited() ? 'disabled' : ''}}>
-                            {{$reply->favorites_count}} ♥ {{str_plural('Favorite',$reply->favorites_count)}}
-                        </button>
-                    </form>
+
+                    <favorite :reply="{{$reply}}"></favorite>
                 </div>
             </div>
         </div>
@@ -56,10 +52,10 @@
                 </button>
 
                 {{--<form action="/replies/{{$reply->id}}" method="post">--}}
-                    {{--{{csrf_field()}}--}}
-                    {{--{{method_field('DELETE')}}--}}
+                {{--{{csrf_field()}}--}}
+                {{--{{method_field('DELETE')}}--}}
 
-                    {{--<button type="submit" class="btn btn-danger btn-xs">Delete</button>--}}
+                {{--<button type="submit" class="btn btn-danger btn-xs">Delete</button>--}}
                 {{--</form>--}}
 
                 <button type="button" class="btn btn-danger btn-xs" @click="remove">Remove</button>

@@ -34,10 +34,11 @@ class FavoritesTest extends TestCase
         $this->assertCount(1, $reply->favorites);
 
     }
-    
-    
+
+
     /** @test */
-    function anAuthentitedUserMayOnlyFavoriteOnce(){
+    function anAuthentitedUserMayOnlyFavoriteOnce()
+    {
         $this->signIn();
 
         $reply = create(Reply::class);
@@ -46,6 +47,20 @@ class FavoritesTest extends TestCase
         $this->post('replies/' . $reply->id . '/favorites');
 
         $this->assertCount(1, $reply->favorites);
+
+    }
+
+    /** @test */
+    function anAuthenticatedUserCanUnfavoriteAReply()
+    {
+        $this->signIn();
+
+        $reply = create(Reply::class);
+        $reply->favorite();
+
+        $this->delete('replies/' . $reply->id . '/favorites');
+
+        $this->assertCount(0, $reply->favorites);
 
     }
 }
