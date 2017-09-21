@@ -39,7 +39,10 @@
 
 
                     <h3 class="panel-heading">Replies : </h3>
-                    <replies :data="{{$thread->replies}}" @removed="repliesCount--" ></replies>
+                    <replies :data="{{$thread->replies}}"
+                    @removed="repliesCount--"
+                    @added="repliesCount++"
+                    ></replies>
                     {{--                @forelse($replies as $reply)--}}
                     {{--@include('threads.reply')--}}
                     {{--@empty--}}
@@ -47,22 +50,6 @@
                     {{--@endforelse--}}
                     {{$replies->links()}}
 
-
-
-                    @if(auth()->check())
-                        <form method="post" action="{{$thread->path().'/replies'}}">
-                            {{csrf_field()}}
-                            <div class="form-group">
-                                <label for="body"></label>
-                                <textarea class="form-control" name="body" id="body" cols="30" rows="5"
-                                          placeholder="Have something to say ?"></textarea>
-                            </div>
-
-                            <button class="btn btn-default" type="submit">Post</button>
-                        </form>
-                    @else
-                        <p class="text-center"> Please <a href="{{route('login')}}">sign in</a> to participate</p>
-                    @endif
 
                 </div>
 
@@ -81,6 +68,7 @@
 
 
         </div>
+
     </thread-view>
 
 @endsection

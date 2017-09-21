@@ -10,12 +10,12 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+
     <script>
         window.App = {!! json_encode([
         'signedIn' => auth()->check(),
         'user'=>auth()->user()
         ]) !!}
-
     </script>
 
     <!-- Styles -->
@@ -69,5 +69,7 @@
 
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
+
+
 </body>
 </html>

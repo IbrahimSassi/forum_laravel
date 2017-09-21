@@ -20,13 +20,22 @@ class ReplyController extends Controller
         $this->validate($request, [
             'body' => 'required'
         ]);
-        $thread->addReply([
+        $reply = Reply::create([
             'body' => \request('body'),
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
+            'thread_id' => $thread->id
         ]);
+//        $reply = $thread->addReply([
+//            'body' => \request('body'),
+//            'user_id' => auth()->id()
+//        ]);
+
+        if (\request()->expectsJson()) {
+            return $reply->load('owner');
+        }
 
         return back()
-            ->with('flash_message', 'Your reply has been left');;
+            ->with('flash_message', 'Your reply has been left');
     }
 
 
