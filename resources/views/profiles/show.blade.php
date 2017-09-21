@@ -12,7 +12,7 @@
                 </div>
 
 
-                @foreach($activities as $date => $records)
+                @forelse($activities as $date => $records)
                     <h3 class="page-header">
                         {{$date}}
                     </h3>
@@ -23,7 +23,9 @@
                         @endif
 
                     @endforeach
-                @endforeach
+                @empty
+                    <p>There is no activities for this user</p>
+                @endforelse
             </div>
         </div>
     </div>

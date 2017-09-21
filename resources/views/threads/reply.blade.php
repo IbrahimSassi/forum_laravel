@@ -6,11 +6,12 @@
                 <h5 class="flex">
                     <a href="/profiles/{{$reply->owner->name}}">{{$reply->owner->name}}</a> said :
                 </h5>
-                <div>
 
-
-                    <favorite :reply="{{$reply}}"></favorite>
-                </div>
+                @if(auth()->check())
+                    <div>
+                        <favorite :reply="{{$reply}}"></favorite>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="panel-body" v-if="!loading">
