@@ -10,6 +10,14 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <script>
+        window.App = {!! json_encode([
+        'signedIn' => auth()->check(),
+        'user'=>auth()->user()
+        ]) !!}
+
+    </script>
+
     <!-- Styles -->
     <style>
         .blog-footer {
@@ -38,7 +46,8 @@
         .mr-1 {
             margin-right: 1em;
         }
-        [v-cloak]{
+
+        [v-cloak] {
             display: none;
         }
 

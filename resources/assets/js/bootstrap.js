@@ -54,6 +54,11 @@ if (token) {
 // });
 
 window.Vue = require('vue');
+window.Vue.prototype.authorize = function (handler) {
+
+    const user = window.App.user;
+    return user ? handler(user) : false;
+};
 
 
 window.events = new Vue();
