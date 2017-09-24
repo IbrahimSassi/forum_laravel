@@ -39,16 +39,7 @@
 
 
                     <h3 class="panel-heading">Replies : </h3>
-                    <replies :data="{{$thread->replies}}"
-                    @removed="repliesCount--"
-                    @added="repliesCount++"
-                    ></replies>
-                    {{--                @forelse($replies as $reply)--}}
-                    {{--@include('threads.reply')--}}
-                    {{--@empty--}}
-                    {{--<p>Be the first to reply</p>--}}
-                    {{--@endforelse--}}
-                    {{$replies->links()}}
+                    <replies @added="repliesCount++" @removed="repliesCount--"></replies>
 
 
                 </div>

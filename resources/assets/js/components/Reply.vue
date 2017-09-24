@@ -1,10 +1,11 @@
 <template>
-    <div :id="'reply-'+id" class="panel panel-default" v-cloak>
-
+    <div :id="'reply-'+id" class="panel panel-default">
         <div class="panel-heading">
             <div class="level">
                 <h5 class="flex">
-                    <a :href="'/profiles/'+data.owner.name">{{data.owner.name}}</a> said :
+                    <a :href="'/profiles/'+data.owner.name"
+                       v-text="data.owner.name">
+                    </a> said <span v-text="ago"></span>
                 </h5>
 
                 <div v-if="signedIn">
@@ -12,106 +13,73 @@
                 </div>
             </div>
         </div>
-        <div class="panel-body" v-if="!loading">
 
+        <div class="panel-body">
             <div v-if="editing">
                 <div class="form-group">
-                    <label for="body"></label>
-                    <textarea v-model="body" class="form-control" id="body" name="body">
-                    </textarea>
+                    <textarea class="form-control" v-model="body"></textarea>
                 </div>
-                <button type="button"
-                        class="btn btn-xs btn-primary"
-                        @click="update"
-                >Update
-                </button>
-                <button type="button"
-                        class="btn btn-xs btn-link"
-                        @click="cancel"
-                >Cancel
-                </button>
+
+                <button class="btn btn-xs btn-primary" @click="update">Update</button>
+                <button class="btn btn-xs btn-link" @click="editing = false">Cancel</button>
             </div>
 
-            <div v-else v-text="body">
-            </div>
-            <span class="badge pull-right"> {{data.created_at}}</span>
-            <hr>
+            <div v-else v-text="body"></div>
         </div>
-        <div class="panel-body" v-else>
-            <h6 class="text-center">Loading ...</h6>
-        </div>
-
 
         <div class="panel-footer level" v-if="canUpdate">
-
-            <button type="button" class="btn btn-info btn-xs mr-1"
-                    @click="editing=true"
-            >Edit
-            </button>
-            <button type="button" class="btn btn-danger btn-xs" @click="remove">Remove</button>
+            <button class="btn btn-xs mr-1" @click="editing = true">Edit</button>
+            <button class="btn btn-xs btn-danger mr-1" @click="destroy">Delete</button>
         </div>
     </div>
 </template>
 
 <script>
     import Favorite from './Favorite.vue';
+    import moment from 'moment';
 
-    export default{
+    export default {
         props: ['data'],
-        components: {Favorite},
-        data(){
+
+        components: { Favorite },
+
+        data() {
             return {
                 editing: false,
-                body: this.data.body,
                 id: this.data.id,
-                loading: false
-            }
+                body: this.data.body
+            };
         },
+
         computed: {
-            signedIn()
-            {
+            ago() {
+                return moment(this.data.created_at).fromNow() + '...';
+            },
+
+            signedIn() {
                 return window.App.signedIn;
             },
-            canUpdate(){
-                return this.authorize(user => user.id == this.data.user_id);
+
+            canUpdate() {
+                return this.authorize(user => this.data.user_id == user.id);
             }
         },
+
         methods: {
-            update(){
-                let baseUrl = "http://localhost:8000";
-                this.loading = true;
-                axios
-                    .patch('/replies/' + this.data.id, {
-                        body: this.body
-                    })
-                    .then((response) => {
-                        this.body = response.data.body;
-//                        setTimeout(() => {
-                        this.loading = false;
-//                        }, 1000);
-                    });
+            update() {
+                axios.patch('/replies/' + this.data.id, {
+                    body: this.body
+                });
 
                 this.editing = false;
-                flash('Updated yeah');
-            },
-            remove(){
-                axios.delete('/replies/' + this.data.id)
-                    .then((response) => {
-                        if (response.status == 200) {
-                            this.$emit('deleted', this.data.id);
-//                            $(this.$el).fadeOut(300, () => {
-//                                flash('Your reply has been deleted');
-//                            });
 
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                flash('Updated!');
             },
-            cancel(){
-                this.editing = false;
-                this.body = this.data.body;
+
+            destroy() {
+                axios.delete('/replies/' + this.data.id);
+
+                this.$emit('deleted', this.data.id);
             }
         }
     }
