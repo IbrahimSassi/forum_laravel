@@ -15,9 +15,11 @@ class Thread extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope('replyCount', function ($builder) {
-            $builder->withCount('replies');
-        });
+
+//        Commenting This because we added a specific column for replies count
+//        static::addGlobalScope('replyCount', function ($builder) {
+//            $builder->withCount('replies');
+//        });
 
 //        Another option to delete replies related to a thread
         static::deleting(function ($thread) {
