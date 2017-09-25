@@ -24,6 +24,11 @@ Route::delete('/threads/{channel}/{thread}', 'ThreadController@destroy');
 
 Route::post('/threads/{channel}/{thread}/replies', 'ReplyController@store');
 Route::get('/threads/{channel}/{thread}/replies', 'ReplyController@index');
+
+Route::post('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptions@store')
+    ->middleware('auth');
+
+
 Route::delete('/replies/{reply}', 'ReplyController@destroy');
 Route::patch('/replies/{reply}', 'ReplyController@update');
 // By This Line
