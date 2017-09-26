@@ -28,6 +28,8 @@ Route::get('/threads/{channel}/{thread}/replies', 'ReplyController@index');
 Route::post('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptions@store')
     ->middleware('auth');
 
+Route::post('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@store')->middleware('auth');
+
 
 Route::delete('/replies/{reply}', 'ReplyController@destroy');
 Route::patch('/replies/{reply}', 'ReplyController@update');
