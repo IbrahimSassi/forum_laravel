@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Thread;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -15,8 +16,9 @@ class SubscribeToThreadsTest extends TestCase
     {
         $this->signIn();
         // Given we have a thread...
-        $thread = create('App\Thread');
+        $thread = create(Thread::class);
         // And the user subscribes to the thread...
+//        dd($thread->path() . '/subscriptions');
         $this->post($thread->path() . '/subscriptions');
         $this->assertCount(1, $thread->subscriptions);
 
@@ -28,8 +30,7 @@ class SubscribeToThreadsTest extends TestCase
         ]);
 
         // A notification should be prepared for the user.
-        // TODO:
-        // $this->assertCount(1, auth()->user()->notifications);
+         $this->assertCount(1, auth()->user()->notifications);
     }
 
 

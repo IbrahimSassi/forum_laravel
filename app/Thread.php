@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Notifications\ThreadWasUpdated;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
@@ -44,13 +45,11 @@ class Thread extends Model
     public function path()
     {
         return "/threads/{$this->channel->slug}/{$this->id}";
-//        return '/threads/' . $this->channel->slug . '/' . $this->id;
     }
 
     public function replies()
     {
         return $this->hasMany(Reply::class);
-//            ->withCount('favorites');
     }
 
     public function getReplyCountAttribute()
@@ -72,7 +71,15 @@ class Thread extends Model
 
     public function addReply($reply)
     {
-        return $this->replies()->create($reply);
+        $reply = $this->replies()->create($reply);
+        // Prepare notifications for all subscribers.
+        $this->subscriptions
+            ->filter(function ($sub) use ($reply) {
+                return $sub->user_id != $reply->user_id;
+            })
+            ->each->notify(new ThreadWasUpdated($this, $reply));
+        return $reply;
+
     }
 
     public function scopeFilter($query, $filters)
