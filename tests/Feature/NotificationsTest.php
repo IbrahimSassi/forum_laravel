@@ -22,15 +22,16 @@ class NotificationsTest extends TestCase
     {
         $thread = create('App\Thread')->subscribe();
         $this->assertCount(0, auth()->user()->notifications);
-//        $thread->addReply([
-//            'user_id' => auth()->id(),
-//            'body' => 'Some reply here'
-//        ]);
+        $thread->addReply([
+            'user_id' => auth()->id(),
+            'body' => 'Some reply here'
+        ]);
         $this->assertCount(0, auth()->user()->fresh()->notifications);
         $thread->addReply([
             'user_id' => create('App\User')->id,
             'body' => 'Some reply here'
         ]);
+        dd(auth()->user()->fresh()->notifications);
         $this->assertCount(1, auth()->user()->fresh()->notifications);
     }
 

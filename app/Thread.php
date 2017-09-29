@@ -17,7 +17,6 @@ class Thread extends Model
     protected static function boot()
     {
         parent::boot();
-
 //        Commenting This because we added a specific column for replies count
 //        static::addGlobalScope('replyCount', function ($builder) {
 //            $builder->withCount('replies');
@@ -74,14 +73,11 @@ class Thread extends Model
         $reply = $this->replies()->create($reply);
 
         // Prepare notifications for all subscribers.
-//        dd($this->subscriptions
-//            ->filter($this->filterSubscribedUser($reply)));
         $this->subscriptions
-            ->filter($this->filterSubscribedUser($reply))
+            ->filter(function ($sub) use ($reply) {
+                return $sub->user_id != $reply->user_id;
+            })
             ->each->notify($reply);
-
-        dd($this->subscriptions
-            ->filter($this->filterSubscribedUser($reply)));
 
         return $reply;
 
@@ -125,15 +121,5 @@ class Thread extends Model
             ->exists();
     }
 
-    /**
-     * @param $reply
-     * @return \Closure
-     */
-    protected function filterSubscribedUser($reply)
-    {
-        return function ($sub) use ($reply) {
-            return $sub->user_id != $reply->user_id;
-        };
-    }
 
 }
