@@ -49,4 +49,3 @@ Route::post('/threads/{thread}/favorites', 'FavoriteController@storeThread');
 Route::get('/profiles/{user}', 'ProfileController@show')->name('profile');
 Route::get('/profiles/{user}/notifications', 'UserNotificationController@index');
 Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationController@destroy');
-

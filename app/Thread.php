@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Notifications\ThreadWasUpdated;
+use App\Filters\ThreadFilters;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
@@ -83,7 +83,7 @@ class Thread extends Model
 
     }
 
-    public function scopeFilter($query, $filters)
+    public function scopeFilter($query,ThreadFilters $filters)
     {
         return $filters->apply($query);
     }
