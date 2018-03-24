@@ -13,11 +13,14 @@ class ReplyController extends Controller
     {
         $this->middleware('auth', ['except' => 'index']);
     }
+
     /**
      * Fetch all relevant replies.
      *
-     * @param int    $channelId
+     * @param int $channelId
      * @param Thread $thread
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function index($channelId, Thread $thread)
     {
@@ -27,17 +30,13 @@ class ReplyController extends Controller
     public function store($channelId, Thread $thread, Request $request)
     {
         $this->validate($request, [
-            'body' => 'required'
+            'body' => 'required',
         ]);
-        $reply = Reply::create([
+
+        $reply = $thread->addReply([
             'body' => \request('body'),
             'user_id' => auth()->id(),
-            'thread_id' => $thread->id
         ]);
-//        $reply = $thread->addReply([
-//            'body' => \request('body'),
-//            'user_id' => auth()->id()
-//        ]);
 
         if (\request()->expectsJson()) {
             return $reply->load('owner');
@@ -57,8 +56,9 @@ class ReplyController extends Controller
 //        }
         $reply->delete();
 
-        if (request()->expectsJson())
+        if (request()->expectsJson()) {
             return response([], 200);
+        }
 
         return back();
     }

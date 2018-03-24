@@ -14,6 +14,13 @@
                     @click="addReply">Post
             </button>
 
+
+            
+
+        <button type="submit" class="btn btn-default"></button>
+
+
+
         </div>
 
         <div v-else>

@@ -13,9 +13,10 @@ class ThreadHasNewReply
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param $thread
+     * @param $reply
      */
-    public function __construct($thread,$reply)
+    public function __construct($thread, $reply)
     {
         //
         $this->thread = $thread;

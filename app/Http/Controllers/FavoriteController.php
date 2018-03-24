@@ -24,6 +24,7 @@ class FavoriteController extends Controller
     public function storeThread(Thread $thread)
     {
         $thread->favorite(auth()->id());
+        return back();
     }
 
     public function destroyReply(Reply $reply)

@@ -14,6 +14,12 @@ class Activity extends Model
     }
 
 
+    /**
+     * @param User $user
+     * @param int $take
+     *
+     * @return mixed
+     */
     public static function feed($user, $take = 50)
     {
         return $user->activities()

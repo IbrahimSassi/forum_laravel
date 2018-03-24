@@ -6,6 +6,7 @@ use App\Channel;
 use App\Filters\ThreadFilters;
 use App\Thread;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ThreadController extends Controller
@@ -22,16 +23,20 @@ class ThreadController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Channel $channel
+     * @param ThreadFilters $filters
      * @return \Illuminate\Http\Response
      */
     public function index(Channel $channel, ThreadFilters $filters)
     {
 
+
         $threads = $this->getThreads($channel, $filters);
 
 
-        if (request()->wantsJson())
+        if (request()->wantsJson()) {
             return $threads;
+        }
 
         return view('threads.index', compact('threads'));
     }
@@ -65,7 +70,7 @@ class ThreadController extends Controller
             'user_id' => auth()->id(),
             'channel_id' => request('channel_id'),
             'title' => request('title'),
-            'body' => request('body')
+            'body' => request('body'),
         ]);
 
         return redirect($thread->path())
@@ -80,10 +85,11 @@ class ThreadController extends Controller
      */
     public function show($channelId, Thread $thread)
     {
+        if (auth()->check()) {
+            auth()->user()->read($thread);
+        }
 
-//        return ($thread);
-        $replies = $thread->replies()->paginate(20);
-        return view('threads.show', compact('thread', 'replies'));
+        return view('threads.show', compact('thread'));
         //
     }
 
@@ -127,8 +133,9 @@ class ThreadController extends Controller
 //        $thread->replies()->delete();
         $thread->delete();
 
-        if (\request()->wantsJson())
+        if (\request()->wantsJson()) {
             return response([], 204);
+        }
 
         return redirect('/threads')
             ->with('flash_message', 'Your Thread has been deleted');
@@ -149,6 +156,7 @@ class ThreadController extends Controller
 //            OR
             $threads = $channel->threads()->latest();
         }
+
         return $threads->get();
     }
 }

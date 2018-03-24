@@ -73,14 +73,15 @@ class Thread extends Model
     {
         $reply = $this->replies()->create($reply);
 
-        event(new ThreadHasNewReply($this,$reply));
-
+//        event(new ThreadHasNewReply($this, $reply));
+        $this->notifySubscribers($reply);
 
         return $reply;
 
     }
 
-    public function scopeFilter($query,ThreadFilters $filters)
+
+    public function scopeFilter($query, ThreadFilters $filters)
     {
         return $filters->apply($query);
     }
@@ -88,8 +89,9 @@ class Thread extends Model
     public function subscribe($userId = null)
     {
         $this->subscriptions()->create([
-            'user_id' => $userId ?: auth()->id()
+            'user_id' => $userId ?: auth()->id(),
         ]);
+
         return $this;
     }
 
@@ -116,6 +118,24 @@ class Thread extends Model
         return $this->subscriptions()
             ->where('user_id', auth()->id())
             ->exists();
+    }
+
+    /**
+     * @param $reply
+     */
+    protected function notifySubscribers($reply)
+    {
+        $this->subscriptions
+            ->where('user_id', '!=', $reply->user_id)
+            ->each
+            ->notify($reply);
+    }
+
+    public function hasUpdatesFor($user = null)
+    {
+        $user = $user ?: auth()->user();
+
+        return $this->updated_at > cache($user->visitedThreadCacheKey($this));
     }
 
 

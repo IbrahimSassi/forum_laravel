@@ -24,7 +24,7 @@ class ThreadWasUpdated extends Notification
      * Create a new notification instance.
      *
      * @param \App\Thread $thread
-     * @param \App\Reply  $reply
+     * @param \App\Reply $reply
      */
     public function __construct($thread, $reply)
     {
@@ -49,9 +49,10 @@ class ThreadWasUpdated extends Notification
      */
     public function toArray()
     {
+
         return [
-            'message' => $this->reply->owner->name . ' replied to ' . $this->thread->title,
-            'link' => $this->reply->path()
+            'message' => $this->reply->owner->name.' replied to '.$this->thread->title,
+            'link' => $this->reply->path(),
         ];
     }
 }
