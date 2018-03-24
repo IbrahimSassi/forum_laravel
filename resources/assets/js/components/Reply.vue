@@ -35,51 +35,60 @@
 </template>
 
 <script>
-    import Favorite from './Favorite.vue';
-    import moment from 'moment';
+  import Favorite from './Favorite.vue';
+  import moment from 'moment';
 
-    export default {
-        props: ['data'],
+  export default {
+    props: ['data'],
 
-        components: { Favorite },
+    components: { Favorite },
 
-        data() {
-            return {
-                editing: false,
-                id: this.data.id,
-                body: this.data.body
-            };
-        },
+    data() {
+      return {
+        editing: false,
+        id: this.data.id,
+        body: this.data.body,
+      };
+    },
 
-        computed: {
-            ago() {
-                return moment(this.data.created_at).fromNow() + '...';
-            },
+    computed: {
+      ago() {
+        return moment(this.data.created_at).fromNow() + '...';
+      },
 
-            signedIn() {
-                return window.App.signedIn;
-            },
+      signedIn() {
+        return window.App.signedIn;
+      },
 
-            canUpdate() {
-                return this.authorize(user => this.data.user_id == user.id);
-            }
-        },
+      canUpdate() {
+        return this.authorize(user => this.data.user_id == user.id);
+      },
+    },
 
-        methods: {
-            update() {
-                axios.patch('/replies/' + this.data.id, {
-                    body: this.body
-                });
+    methods: {
+      update() {
+        axios.patch('/replies/' + this.data.id, {
+          body: this.body,
+        }).then((data) => {
+          flash('Updated!');
+        }).catch((error) => {
+          if (error.response) {
+            flash(error.response.data, 'danger');
+          }
+          else {
+            flash('Something wrong happens', 'danger');
+          }
+          this.body = this.data.body;
+        });
 
-                this.editing = false;
+        this.editing = false;
 
-                flash('Updated!');
-            },
+      },
 
-            destroy() {
-                axios.delete('/replies/' + this.data.id);
-                this.$emit('deleted', this.data.id);
-            }
-        }
-    }
+      destroy() {
+        axios.delete('/replies/' + this.data.id);
+        this.$emit('deleted', this.data.id);
+      },
+    },
+  }
 </script>
