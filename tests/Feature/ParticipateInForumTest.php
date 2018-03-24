@@ -32,7 +32,7 @@ class ParticipateInForumTest extends TestCase
         $thread = factory(Thread::class)->create();
 
         $reply = factory(Reply::class)->make();
-        $this->post($thread->path() . '/replies', $reply->toArray());
+        $this->post($thread->path().'/replies', $reply->toArray());
 
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
         $this->assertEquals(1, $thread->fresh()->replies_count);
@@ -46,7 +46,7 @@ class ParticipateInForumTest extends TestCase
         $thread = factory(Thread::class)->create();
 
         $reply = make(Reply::class, ['body' => null]);
-        $this->post($thread->path() . '/replies', $reply->toArray())
+        $this->post($thread->path().'/replies', $reply->toArray())
             ->assertSessionHasErrors('body');
 
     }
@@ -105,4 +105,28 @@ class ParticipateInForumTest extends TestCase
             ->assertStatus(403);
 
     }
+
+
+    /*
+     * @test
+     * @expectedException \Exception
+     */
+    public function replies_that_contain_spam_may_not_be_added()
+    {
+        try {
+            $this->signIn();
+
+            $thread = create(Thread::class);
+            $reply = make(Reply::class, [
+                'body' => 'Yahoo Customer Support',
+            ]);
+            $this->post($thread->path().'/replies', $reply->toArray());
+
+
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
+    }
+
+
 }
